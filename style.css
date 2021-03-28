@@ -1,0 +1,31 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+#map {
+  width: 640px;
+  height: 480px;
+}
+
+.map-visible {
+  display: block;
+}
+
+.map-invisible {
+  display: none;
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  width: 320px;
+}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Расчет стоимости доставки</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="style.css" />
+    <script
+      src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=38fbe75b-d1ce-45b7-a919-121ac7a51add"
+      type="text/javascript"
+    ></script>
+    <script src="https://unpkg.com/vue@next"></script>
+  </head>
+  <body>
+    <div class="app" id="app">
+      <div class="inputs">
+        <label for="suggest1">Откуда: </label>
+        <input
+          v-on:focus="focusHandler"
+          placeholder="Откуда"
+          type="text"
+          id="suggest1"
+        />
+        <label for="suggest2">Куда: </label>
+        <input
+          v-on:focus="focusHandler"
+          placeholder="Куда"
+          type="text"
+          id="suggest2"
+        />
+        <label for="tonns">Габариты: </label>
+        <input
+          v-model="tonns"
+          v-on:focus="focusHandler"
+          v-on:input="tonnsHandler"
+          type="text"
+          placeholder="габариты"
+          id="tonns"
+        />
+        <button v-on:click="closeHandler">close</button>
+        <h1>Цена: {{price}}</h1>
+      </div>
+      <div
+        v-bind:class="{'map-visible': isFull, 'map-invisible': !isFull}"
+        id="map"
+      ></div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
