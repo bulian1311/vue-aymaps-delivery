@@ -11,38 +11,119 @@
     <script src="https://unpkg.com/vue@next"></script>
   </head>
   <body>
-    <div class="app" id="app">
-      <div class="inputs">
-        <label for="suggest1">Откуда: </label>
-        <input
-          v-on:focus="focusHandler"
-          placeholder="Откуда"
-          type="text"
-          id="suggest1"
-        />
-        <label for="suggest2">Куда: </label>
-        <input
-          v-on:focus="focusHandler"
-          placeholder="Куда"
-          type="text"
-          id="suggest2"
-        />
-        <label for="tonns">Габариты: </label>
-        <input
-          v-model="tonns"
-          v-on:focus="focusHandler"
-          v-on:input="tonnsHandler"
-          type="text"
-          placeholder="габариты"
-          id="tonns"
-        />
-        <button v-on:click="closeHandler">close</button>
-        <h1>Цена: {{price}}</h1>
+    <div class="container" id="app">
+      <div class="grid-container">
+        <div class="route border">
+          <h3>Указажите маршрут</h3>
+          <div>
+            <input
+              v-on:focus="focusHandler"
+              placeholder="Откуда"
+              type="text"
+              id="suggest1"
+            />
+          </div>
+          <div>
+            <input
+              v-on:focus="focusHandler"
+              placeholder="Куда"
+              type="text"
+              id="suggest2"
+            />
+          </div>
+        </div>
+
+        <div class="options border">
+          <h3>Параметры</h3>
+          <div style="margin-bottom: 20px">
+            <div style="display: flex; justify-content: space-between">
+              <span style="display: flex; flex-grow: 1"
+                >Расстояние: <span class="dashed-line"></span
+              ></span>
+              <span id="quantityKm" style="font-weight: 600" class="total">
+                {{distance}} км
+              </span>
+            </div>
+            <span
+              style="
+                display: block;
+                text-align: right;
+                color: gray;
+                font-style: italic;
+              "
+            >
+              (рассчитывается автоматически)
+            </span>
+          </div>
+          <div>
+            <input
+              v-on:focus="focusHandler"
+              v-model="tonns"
+              type="number"
+              id="ton"
+              placeholder="Масса груза, тонн"
+              required
+            />
+          </div>
+          <div>
+            <input
+              v-on:focus="focusHandler"
+              v-model="tariff"
+              type="number"
+              id="priceKm"
+              placeholder="Стоимость 1 километра"
+              required
+            />
+          </div>
+        </div>
+        <div>
+          <button v-on:click="calculate" class="btn">Рассчитать</button>
+        </div>
+
+        <div
+          :style="{display: isFull ? 'block' : 'none'}"
+          class="calculation border"
+        >
+          <h3>Расчет</h3>
+          <div class="calculation__item">
+            <div>
+              <span>
+                Общая стоимость перевозки:
+                <span class="dashed-line"></span>
+              </span>
+              <span id="price1" class="total">{{priceTotal}}</span>
+            </div>
+            <span class="comment">
+              (произведение расстояния на цену за километр)
+            </span>
+          </div>
+          <div class="calculation__item">
+            <div>
+              <span>
+                Тоннокилометров, всего:
+                <span class="dashed-line"></span
+              ></span>
+              <span id="price2" class="total">{{tonnsKmTotal}}</span>
+            </div>
+            <span class="comment">
+              (произведение расстояния на массу перевезенного груза)
+            </span>
+          </div>
+          <div class="calculation__item">
+            <div>
+              <span>
+                Стоимость 1 тоннокилометра:
+                <span class="dashed-line"></span>
+              </span>
+              <span id="price3" class="total">{{tonnsKm}}</span>
+            </div>
+            <span class="comment">
+              (общая стоимость делится на количество тоннокилометров)
+            </span>
+          </div>
+          <div id="map"></div>
+        </div>
       </div>
-      <div
-        v-bind:class="{'map-visible': isFull, 'map-invisible': !isFull}"
-        id="map"
-      ></div>
     </div>
 
     <script src="app.js"></script>

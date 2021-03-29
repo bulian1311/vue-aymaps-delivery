@@ -1,41 +1,30 @@
 const app = {
   data() {
     return {
-      DELIVERY_TARIFF: 20,
       isFull: false,
-      price: 0,
+      distance: 0,
       tonns: 0,
+      tariff: 0,
+      priceTotal: 0,
+      tonnsKm: 0,
+      tonnsKmTotal: 0,
     };
   },
   methods: {
-    calculate(routeLength, tonns) {
-      let priceByKm = routeLength * this.DELIVERY_TARIFF;
+    calculate() {
+      let priceByKm = this.distance * this.tariff;
 
-      let priceByTonn = routeLength * tonns;
+      this.tonnsKmTotal = this.distance * this.tonns;
 
-      this.price = priceByKm + priceByTonn;
+      this.priceTotal = priceByKm + this.tonnsKmTotal;
+
+      this.tonnsKm = this.priceTotal / this.distance;
     },
     focusHandler() {
       this.isFull = true;
     },
     closeHandler() {
       this.isFull = false;
-    },
-    async tonnsHandler() {
-      const distance = await this.getDistance();
-      this.calculate(distance || 0, this.tonns || 0);
-    },
-    async getDistance() {
-      const route = await routePanelControl.routePanel.getRouteAsync();
-      route.model.setParams({ results: 1 }, true);
-
-      let activeRoute = route.getActiveRoute();
-
-      if (activeRoute) {
-        let length = route.getActiveRoute().properties.get("distance");
-
-        return Math.round(length.value / 1000);
-      }
     },
     init() {
       const myMap = new ymaps.Map("map", {
@@ -93,12 +82,16 @@ const app = {
 
           if (activeRoute) {
             let length = route.getActiveRoute().properties.get("distance");
-            this.calculate(Math.round(length.value / 1000), this.tonns || 0);
+            this.distance = Math.round(length.value / 1000);
+            this.priceTotal = 0;
+            this.tonnsKm = 0;
+            this.tonnsKmTotal = 0;
           }
         });
       });
     },
   },
+
   mounted() {
     ymaps.ready(this.init);
   },
